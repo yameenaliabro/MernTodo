@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, List, message, Checkbox, Divider } from 'antd';
-import todoapi from '../todoapi/todapi';
+import todoapi from '../api/api';
 interface Todo { 
     _id: string;
     text: string;
@@ -10,7 +10,7 @@ const TodoList = () => {
     const [todos, setTodos] = useState<Todo[]>([]);
     const fetchTodos = async () => {
         try {
-            const response = await todoapi.get<Todo[]>("getalltodo/");
+            const response = await todoapi.get<Todo[]>("/todo/getalltodo/");
             setTodos(response.data);
         } catch (error) {
             console.error(error);
@@ -22,7 +22,7 @@ const TodoList = () => {
     }, []);
     const handleAdd = async (values: any) => {
         try {
-            const response = await todoapi.post<Todo>("addtodo/", values);
+            const response = await todoapi.post<Todo>("/todo/addtodo/", values);
             setTodos([...todos, response.data]);
             message.success('Todo added successfully');
         } catch (error) {
@@ -32,7 +32,7 @@ const TodoList = () => {
     };
     const handleDelete = async (todoId: string) => {
         try {
-          await todoapi.delete(`/deletetodo/${todoId}`);
+          await todoapi.delete(`/todo/deletetodo/${todoId}`);
           setTodos(todos.filter((todo) => todo._id !== todoId));
           message.success('Todo deleted successfully');
         } catch (error) {
@@ -42,7 +42,7 @@ const TodoList = () => {
       };
       const markTodoAsRead = async (id:string) => {
         try {
-          const response = await todoapi.put(`/markisread/${id}`);
+          const response = await todoapi.put(`/todo/markisread/${id}`);
           return response.data;
         } catch (error) {
           console.error(error);

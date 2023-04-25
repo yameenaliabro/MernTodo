@@ -1,9 +1,19 @@
-import { Form, Input, Button } from "antd"
+import { Form, Input, Button,message} from "antd"
 import { Link } from "react-router-dom";
-import "./Auth.css"
-function Auth() {
-    let signin = (values: any) => {
+import "./Login.css"
+import api from "../../api/api";
+import {useNavigate} from "react-router-dom"
+function Login() {
+    let navigate = useNavigate()
+    let signin =  async (values:string) => {
         console.log(values)
+        let response = await  api.post("/login/",values).then(()=>{
+            navigate("/Todolist")
+            console.log(response)
+           }).catch((err)=>{
+               message.error(err)
+               alert(err)
+           })
     }
     return (
         <div className="container">
@@ -16,12 +26,6 @@ function Auth() {
                     marginBottom: 100,
                 }}
             >
-                  <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Please Enter a Username!' }]}
-          >
-            <Input placeholder="Enter a User Name" />
-          </Form.Item>
           <Form.Item
             name="email"
             rules={[{ required: true, message: 'Please Enter a Email!' }]}
@@ -32,18 +36,18 @@ function Auth() {
             name="password"
             rules={[{ required: true, message: 'Please input a  Password' }]}
           >
-            <Input placeholder="enter a product rating "  type="password"/>
+            <Input placeholder="enter a Password "  type="password"/>
           </Form.Item>
                 <Form.Item>
-                    <Button type="primary" block htmlType="submit">Sign Up</Button>
+                    <Button type="primary" block htmlType="submit">Login</Button>
                 </Form.Item>
                 <Form.Item>
-                    <Link to="/signin"><Button type="link" block style={{
+                    <Link to="/"><Button type="link" block style={{
                         color: "blue"
-                    }}>Already ?Account Create in Sign in</Button></Link>
+                    }}>Create Account</Button></Link>
                 </Form.Item>
             </Form>
         </div>
     )
 }
-export default Auth;
+export default Login;
