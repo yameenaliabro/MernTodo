@@ -9,7 +9,6 @@ function Login() {
         console.log(values)
         let response = await  api.post("/login/",values).then(()=>{
             navigate("/Todolist")
-            console.log(response)
            }).catch((err)=>{
                message.error(err)
                alert(err)
